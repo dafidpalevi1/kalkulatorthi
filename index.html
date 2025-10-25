@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator THI Agency</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #FF0050, #00F2EA);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 550px;
+            width: 100%;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #FF0050, #00F2EA);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        .calculator {
+            padding: 25px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+
+        input:focus, select:focus {
+            border-color: #FF0050;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 0, 80, 0.1);
+        }
+
+        .btn-calculate {
+            background: linear-gradient(135deg, #FF0050, #00F2EA);
+            color: white;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .btn-calculate:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 0, 80, 0.3);
+        }
+
+        .result {
+            background-color: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .result.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result h3 {
+            color: #FF0050;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .result-item.total {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #FF0050;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 2px dashed #FF0050;
+        }
+
+        .notification {
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+
+        .notification.info {
+            background-color: #e1f5fe;
+            color: #0277bd;
+            border-left: 4px solid #00F2EA;
+        }
+
+        .notification.warning {
+            background-color: #fff3e0;
+            color: #ef6c00;
+            border-left: 4px solid #ff9800;
+        }
+
+        .notification.success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border-left: 4px solid #4caf50;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 15px;
+            color: #777;
+            font-size: 0.9rem;
+            border-top: 1px solid #e0e0e0;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .calculator {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Kalkulator THI Agency</h1>
+            <p>Hitung bonus diamond TikTok Anda</p>
+        </div>
+        
+        <div class="calculator">
+            <div class="input-group">
+                <label for="diamond">Jumlah Diamond:</label>
+                <input type="number" id="diamond" placeholder="Masukkan jumlah diamond" min="0">
+            </div>
+            
+            <div class="input-group">
+                <label for="duration">Pilih Durasi:</label>
+                <select id="duration">
+                    <option value="" disabled selected>Pilih durasi kontrak</option>
+                    <option value="15">15 Hari / 30 Jam</option>
+                    <option value="18">18 Hari / 45 Jam</option>
+                    <option value="22">22 Hari / 80 Jam</option>
+                </select>
+            </div>
+            
+            <button class="btn-calculate" id="calculate">Hitung Bonus</button>
+            
+            <div class="notification" id="notification"></div>
+            
+            <div class="result" id="result">
+                <h3>Hasil Perhitungan</h3>
+                <div class="result-item">
+                    <span>Jumlah Diamond:</span>
+                    <span id="result-diamond">0</span>
+                </div>
+                <div class="result-item">
+                    <span>Durasi Kontrak:</span>
+                    <span id="result-duration">-</span>
+                </div>
+                <div class="result-item">
+                    <span>Nilai per Diamond:</span>
+                    <span id="result-value">Rp 0</span>
+                </div>
+                <div class="result-item total">
+                    <span>Total Bonus:</span>
+                    <span id="result-total">Rp 0</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>THI Agency &copy; 2025 - All rights reserved</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const diamondInput = document.getElementById('diamond');
+            const durationSelect = document.getElementById('duration');
+            const calculateBtn = document.getElementById('calculate');
+            const resultDiv = document.getElementById('result');
+            const notificationDiv = document.getElementById('notification');
+            const resultDiamond = document.getElementById('result-diamond');
+            const resultDuration = document.getElementById('result-duration');
+            const resultValue = document.getElementById('result-value');
+            const resultTotal = document.getElementById('result-total');
+            
+            let isCalculated = false;
+            
+            // Format angka dengan pemisah ribuan
+            function formatNumber(num) {
+                return new Intl.NumberFormat('id-ID').format(num);
+            }
+            
+            // Fungsi untuk menampilkan notifikasi
+            function showNotification(message, type) {
+                notificationDiv.textContent = message;
+                notificationDiv.className = 'notification ' + type;
+                notificationDiv.style.display = 'block';
+            }
+            
+            // Fungsi untuk menghitung bonus berdasarkan DURASI
+            function calculateBonus() {
+                const diamond = parseInt(diamondInput.value) || 0;
+                const duration = durationSelect.value;
+                
+                // Validasi input
+                if (diamond < 0) {
+                    showNotification('Jumlah diamond tidak boleh negatif', 'warning');
+                    return;
+                }
+                
+                if (!duration) {
+                    showNotification('Silakan pilih durasi kontrak', 'warning');
+                    return;
+                }
+                
+                let valuePerDiamond = 0;
+                let totalBonus = 0;
+                let durationText = '';
+                let notificationMessage = '';
+                let notificationType = '';
+                
+                // Tentukan nilai per diamond berdasarkan DURASI yang dipilih
+                if (duration === '15') {
+                    valuePerDiamond = 2.5;
+                    durationText = '15 Hari / 30 Jam';
+                } else if (duration === '18') {
+                    valuePerDiamond = 3.5;
+                    durationText = '18 Hari / 45 Jam';
+                } else if (duration === '22') {
+                    valuePerDiamond = 4.5;
+                    durationText = '22 Hari / 80 Jam';
+                }
+                
+                // Hitung total bonus
+                totalBonus = diamond * valuePerDiamond;
+                
+                // Tentukan notifikasi berdasarkan jumlah diamond
+                if (diamond >= 0 && diamond <= 3999) {
+                    notificationMessage = 'Anda belum menerima bonus bulan ini. Butuh minimal 4.000 diamond untuk mendapatkan bonus.';
+                    notificationType = 'info';
+                } else {
+                    notificationMessage = `Bonus Anda bulan ini: Rp ${formatNumber(totalBonus)}`;
+                    notificationType = 'success';
+                }
+                
+                // Tampilkan hasil
+                resultDiamond.textContent = formatNumber(diamond);
+                resultDuration.textContent = durationText;
+                resultValue.textContent = `Rp ${valuePerDiamond.toFixed(1).replace('.', ',')}`;
+                resultTotal.textContent = `Rp ${formatNumber(totalBonus)}`;
+                
+                // Tampilkan notifikasi
+                showNotification(notificationMessage, notificationType);
+                
+                // Tampilkan hasil
+                resultDiv.classList.add('active');
+                isCalculated = true;
+            }
+            
+            // Event listener untuk tombol hitung
+            calculateBtn.addEventListener('click', calculateBonus);
+            
+            // Event listener untuk input enter
+            diamondInput.addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    calculateBonus();
+                }
+            });
+            
+            // Event listener untuk input - reset jika diubah setelah kalkulasi
+            diamondInput.addEventListener('input', function() {
+                if (isCalculated) {
+                    resultDiv.classList.remove('active');
+                    notificationDiv.style.display = 'none';
+                    isCalculated = false;
+                }
+            });
+            
+            // Event listener untuk perubahan durasi - reset jika diubah setelah kalkulasi
+            durationSelect.addEventListener('change', function() {
+                if (isCalculated) {
+                    resultDiv.classList.remove('active');
+                    notificationDiv.style.display = 'none';
+                    isCalculated = false;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
