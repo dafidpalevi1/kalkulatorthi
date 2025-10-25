@@ -207,7 +207,7 @@
             <div class="input-group">
                 <label for="duration">Pilih Durasi:</label>
                 <select id="duration">
-                    <option value="" disabled selected>Pilih durasi kontrak</option>
+                    <option value="" disabled selected>Pilih durasi</option>
                     <option value="15">15 Hari / 30 Jam</option>
                     <option value="18">18 Hari / 45 Jam</option>
                     <option value="22">22 Hari / 80 Jam</option>
@@ -225,7 +225,7 @@
                     <span id="result-diamond">0</span>
                 </div>
                 <div class="result-item">
-                    <span>Durasi Kontrak:</span>
+                    <span>Durasi:</span>
                     <span id="result-duration">-</span>
                 </div>
                 <div class="result-item">
@@ -282,7 +282,7 @@
                 }
                 
                 if (!duration) {
-                    showNotification('Silakan pilih durasi kontrak', 'warning');
+                    showNotification('Silakan pilih durasi', 'warning');
                     return;
                 }
                 
