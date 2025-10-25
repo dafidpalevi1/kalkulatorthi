@@ -270,7 +270,7 @@
                 notificationDiv.style.display = 'block';
             }
             
-            // Fungsi untuk menghitung bonus berdasarkan DURASI
+            // Fungsi untuk menghitung bonus
             function calculateBonus() {
                 const diamond = parseInt(diamondInput.value) || 0;
                 const duration = durationSelect.value;
@@ -292,41 +292,65 @@
                 let notificationMessage = '';
                 let notificationType = '';
                 
-                // Tentukan nilai per diamond berdasarkan DURASI yang dipilih
-                if (duration === '15') {
-                    valuePerDiamond = 2.5;
-                    durationText = '15 Hari / 30 Jam';
-                } else if (duration === '18') {
-                    valuePerDiamond = 3.5;
-                    durationText = '18 Hari / 45 Jam';
-                } else if (duration === '22') {
-                    valuePerDiamond = 4.5;
-                    durationText = '22 Hari / 80 Jam';
-                }
-                
-                // Tentukan notifikasi dan hasil berdasarkan jumlah diamond
+                // Tentukan kombinasi diamond dan durasi yang valid
                 if (diamond >= 0 && diamond <= 3999) {
                     // TIDAK ADA BONUS untuk diamond 0-3999
                     notificationMessage = 'Anda belum menerima bonus bulan ini. Butuh minimal 4.000 diamond untuk mendapatkan bonus.';
                     notificationType = 'info';
                     
-                    // Tampilkan hasil dengan nilai 0
                     resultDiamond.textContent = formatNumber(diamond);
                     resultDuration.textContent = '-';
                     resultValue.textContent = 'Rp 0';
                     resultTotal.textContent = 'Rp 0';
                     
-                } else {
-                    // HITUNG BONUS untuk diamond 4000 ke atas
+                } else if (diamond >= 4000 && diamond <= 14999 && duration === '15') {
+                    // 4.000-14.999 HANYA untuk durasi 15 hari
+                    valuePerDiamond = 2.5;
                     totalBonus = diamond * valuePerDiamond;
+                    durationText = '15 Hari / 30 Jam';
                     notificationMessage = `Bonus Anda bulan ini: Rp ${formatNumber(totalBonus)}`;
                     notificationType = 'success';
                     
-                    // Tampilkan hasil dengan perhitungan
                     resultDiamond.textContent = formatNumber(diamond);
                     resultDuration.textContent = durationText;
                     resultValue.textContent = `Rp ${valuePerDiamond.toFixed(1).replace('.', ',')}`;
                     resultTotal.textContent = `Rp ${formatNumber(totalBonus)}`;
+                    
+                } else if (diamond >= 15000 && diamond <= 24999 && duration === '18') {
+                    // 15.000-24.999 HANYA untuk durasi 18 hari
+                    valuePerDiamond = 3.5;
+                    totalBonus = diamond * valuePerDiamond;
+                    durationText = '18 Hari / 45 Jam';
+                    notificationMessage = `Bonus Anda bulan ini: Rp ${formatNumber(totalBonus)}`;
+                    notificationType = 'success';
+                    
+                    resultDiamond.textContent = formatNumber(diamond);
+                    resultDuration.textContent = durationText;
+                    resultValue.textContent = `Rp ${valuePerDiamond.toFixed(1).replace('.', ',')}`;
+                    resultTotal.textContent = `Rp ${formatNumber(totalBonus)}`;
+                    
+                } else if (diamond >= 25000 && duration === '22') {
+                    // 25.000+ HANYA untuk durasi 22 hari
+                    valuePerDiamond = 4.5;
+                    totalBonus = diamond * valuePerDiamond;
+                    durationText = '22 Hari / 80 Jam';
+                    notificationMessage = `Bonus Anda bulan ini: Rp ${formatNumber(totalBonus)}`;
+                    notificationType = 'success';
+                    
+                    resultDiamond.textContent = formatNumber(diamond);
+                    resultDuration.textContent = durationText;
+                    resultValue.textContent = `Rp ${valuePerDiamond.toFixed(1).replace('.', ',')}`;
+                    resultTotal.textContent = `Rp ${formatNumber(totalBonus)}`;
+                    
+                } else {
+                    // KOMBINASI TIDAK VALID
+                    notificationMessage = 'Kombinasi jumlah diamond dan durasi tidak valid. Silakan pilih kombinasi yang sesuai.';
+                    notificationType = 'warning';
+                    
+                    resultDiamond.textContent = formatNumber(diamond);
+                    resultDuration.textContent = '-';
+                    resultValue.textContent = 'Rp 0';
+                    resultTotal.textContent = 'Rp 0';
                 }
                 
                 // Tampilkan notifikasi
